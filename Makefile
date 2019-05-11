@@ -29,7 +29,9 @@ endif
 prune:
 	docker image ls --filter 'reference=$(IMAGE_NAME)*' \
 		--filter 'before=$(IMAGE_NAMETAG)' --quiet \
-		| xargs -r docker image rm -f
+		| xargs -r docker image rm -f; echo
+	docker image prune -f; echo
+
 
 what:
 	@echo IMAGE_NAME=$(IMAGE_NAME)
