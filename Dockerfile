@@ -1,10 +1,12 @@
 FROM archlinux/base:latest
 LABEL maintainer="paul@jettero.pl"
-RUN PM='pacman --cachedir /poo --noconfirm --noprogressbar' \
-  ; $PM -Sy --needed archlinux-keyring \
- && $PM -S  --needed pacman \
- && $PM -S  --needed net-tools iproute2 \
- && rm -rf /poo
+USER root
+WORKDIR /root
+COPY poo-include.sh /etc/profile.d/
+RUN chmod 0755 /etc/profile.d/poo-include.sh
+RUN . /etc/profile.d/poo-include.sh; \
+    pinstall net-tools iproute2 vim
+RUN ln -svf vim /bin/vi
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash", "-o", "vi"]

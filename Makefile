@@ -6,10 +6,10 @@ GIT_DESC       := $(shell git describe --dirty --always)
 IMAGE_NAME     := $(HUB_USER)/$(HUB_REPO):$(GIT_DESC)
 CONTAINER_NAME := $(HUB_REPO)-$(GIT_DESC)
 
-run: build
+run: build run.sh
 	./run.sh
 
-run.sh: Makefile
+run.sh: Makefile build
 	@echo building $@
 	@(echo '#!/bin/bash'; echo) > $@
 	@echo docker run --rm -ti --name '"$(CONTAINER_NAME)"' '"$(IMAGE_NAME)"' '"$$@"' >> $@
